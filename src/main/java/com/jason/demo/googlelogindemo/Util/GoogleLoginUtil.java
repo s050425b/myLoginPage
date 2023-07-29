@@ -20,7 +20,7 @@ public class GoogleLoginUtil {
 			.build();
 	
 	public static GoogleIdToken verify(String idTokenString) {
-		if (idTokenString != null && !idTokenString.isBlank()) {
+		if (idTokenString != null && !idTokenString.isEmpty()) {
 			GoogleIdToken idToken = null;
 			try {
 				idToken = verifier.verify(idTokenString);

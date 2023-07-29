@@ -8,15 +8,17 @@ loginForm.addEventListener('submit', async (event) => {
 	const password = loginForm.password.value;
 
 	// TODO: Validate the username and password
-	let isValid = await checkIsValid(username, password);
-	if (isValid == "Valid") {
+	try {
+		const response = await checkIsValid(username, password);
 		window.location.href = 'http://localhost:8080/home';
+	} catch (error) {
+		alert("Incorrect username/password");
 	}
 
 });
 
 function checkIsValid(username, password) {
-	return new Promise(resolve =>
+	return new Promise((resolve, reject) =>
 		fetch("http://localhost:8080/login/normal_authen", {
 			method: "POST",
 			body: JSON.stringify({
@@ -29,10 +31,12 @@ function checkIsValid(username, password) {
 			},
 		})
 			.then(response => {
-				return response.text();
+				if (response.ok) {
+					resolve("Authorized");
+				} else {
+					reject("Unauthorized")
+				}
 			})
-			.then(responseText => {
-				resolve(responseText);
-			})
+
 	);
 } 

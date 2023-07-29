@@ -30,7 +30,7 @@ public class FilterConfig implements Filter {
 		HttpServletResponse res = (HttpServletResponse) response;
 		String cookieValue = JwtUtil.getJwtFromCookie(req);
 		boolean isJwtValid = JwtUtil.isValidJwtToken(cookieValue);
-        if (cookieValue == null || cookieValue.isBlank() || !isJwtValid) {
+        if (cookieValue == null || cookieValue.isEmpty() || !isJwtValid) {
         	res.sendRedirect("/login");
         }
         System.out.println(cookieValue);

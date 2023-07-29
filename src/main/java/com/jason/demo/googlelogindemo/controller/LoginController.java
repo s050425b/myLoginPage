@@ -1,6 +1,8 @@
 package com.jason.demo.googlelogindemo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,14 +52,14 @@ public class LoginController {
 	
 	
 	@PostMapping("/normal_authen")
-	public @ResponseBody String normalAuthen(@RequestBody LoginDto loginDto, HttpServletResponse response) {
+	public ResponseEntity<String> normalAuthen(@RequestBody LoginDto loginDto, HttpServletResponse response) {
 		if (loginService.isUserValid(loginDto.getUsername(), loginDto.getPassword())) {
 			Cookie cookie = new Cookie("jwt" , JwtUtil.generateJwtToken(loginDto.getUsername()));
 			cookie.setPath("/");
 			response.addCookie(cookie);
-			return "Valid";
+			return new ResponseEntity<>("Valid", HttpStatus.OK);
 		}
-		return "Invalid";
+		return new ResponseEntity<>("Incorrect password", HttpStatus.UNAUTHORIZED);
 	}
 	
 	@GetMapping("/is_user_new")
